@@ -2,125 +2,290 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>KotoneClub | 琴音社 - 正在热门</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KotoneClub | 琴音社 - 官方主页</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: radial-gradient(circle at top, var(--steam-bg-top) 0%, var(--steam-bg-bottom) 100%);
-            background-attachment: fixed;
-            color: var(--steam-text-main);
-            font-family: "Motiva Sans", Arial, sans-serif;
+        :root {
+            /* Steam 官方核心色值 */
+            --steam-bg-top: #1b2838;
+            --steam-bg-bottom: #171a21;
+            --steam-text-main: #c6d4df;
+            --steam-text-muted: #8ba0b2;
+            --steam-blue-bright: #67c1f5;
+            --steam-card-bg: rgba(0, 0, 0, 0.3);
+            --steam-btn-green: #5c7e10;
+            --steam-nav-bg: #171a21;
         }
 
-        /* 顶部装饰条 */
+        body {
+            margin: 0;
+            background: linear-gradient(to bottom, var(--steam-bg-top) 0%, var(--steam-bg-bottom) 100%);
+            background-attachment: fixed;
+            color: var(--steam-text-main);
+            font-family: "Motiva Sans", Arial, "Helvetica Neue", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 顶部导航栏 */
         .header-bar {
-            background: #171a21;
-            height: 104px;
+            background: var(--steam-nav-bg);
+            height: 65px;
             display: flex;
             align-items: center;
             padding: 0 15%;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .logo { font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; text-decoration: none; }
+        .logo { 
+            font-size: 22px; 
+            font-weight: 800; 
+            letter-spacing: 3px; 
+            color: #fff; 
+            text-decoration: none; 
+        }
 
-        /* 主内容区域 */
-        .content-hub {
+        /* 主内容布局 */
+        .main-container {
             max-width: 940px;
-            margin: 40px auto;
-        }
-
-        .section-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        /* 模拟 Steam 大图轮播卡片 */
-        .hero-capsule {
+            margin: 35px auto;
             display: flex;
-            background: #00000066;
-            box-shadow: 0 0 20px rgba(0,0,0,0.4);
-            height: 350px;
+            gap: 25px;
         }
 
-        .main-image {
-            width: 616px;
-            background: url('https://via.placeholder.com/616x353/1b2838/67c1f5?text=KotoneClub+Project') no-repeat center;
-            background-size: cover;
+        /* 左侧主内容 */
+        .store-left { flex: 1; }
+
+        .section-tab-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
         }
 
-        .side-info {
+        .tab {
+            padding: 6px 18px;
+            background: rgba(255,255,255,0.06);
+            font-size: 13px;
+            border-radius: 3px 3px 0 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab.active { background: rgba(255,255,255,0.12); color: #fff; font-weight: bold; }
+        .tab:hover:not(.active) { background: rgba(255,255,255,0.1); }
+
+        /* Steam 列表行 */
+        .store-row {
+            display: flex;
+            background: var(--steam-card-bg);
+            margin-bottom: 5px;
+            height: 50px;
+            align-items: center;
+            transition: background 0.2s, transform 0.1s;
+            cursor: pointer;
+            padding-right: 15px;
+            overflow: hidden;
+        }
+
+        .store-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.005);
+        }
+
+        .row-img { width: 132px; height: 50px; object-fit: cover; }
+
+        .row-info {
             flex: 1;
-            padding: 20px;
+            padding-left: 18px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
         }
 
-        .side-info h2 { font-size: 24px; margin: 0 0 10px 0; color: #fff; }
+        .row-title { font-size: 15px; color: #c7d5e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .row-icons { font-size: 11px; color: var(--steam-text-muted); margin-top: 2px; }
 
-        .tag-row { display: flex; gap: 5px; flex-wrap: wrap; }
-        .tag { background: rgba(255,255,255,0.1); padding: 2px 8px; font-size: 11px; border-radius: 2px; color: var(--steam-blue-bright); }
-
-        /* 按钮与状态 */
-        .action-area {
+        .row-price-area {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            margin-top: 10px;
+            gap: 15px;
+            text-align: right;
         }
 
-        .status-btn {
-            background: linear-gradient(to right, #75b022 5%, #588a1b 95%);
-            color: #fff;
-            padding: 8px 15px;
+        .row-tags { font-size: 11px; color: #38819c; }
+        .price-tag {
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            font-size: 13px;
+            color: var(--steam-text-main);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* 右侧侧边栏 */
+        .store-sidebar { width: 220px; display: flex; flex-direction: column; gap: 20px; }
+        .sidebar-box { background: rgba(0, 0, 0, 0.3); padding: 18px; border-radius: 2px; }
+        .sidebar-title {
+            font-size: 12px;
+            color: var(--steam-blue-bright);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(103, 193, 245, 0.2);
+            padding-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+        .sidebar-tag { 
+            background: rgba(103, 193, 245, 0.1); 
+            color: var(--steam-blue-bright); 
+            font-size: 11px; 
+            padding: 3px 8px; 
             border-radius: 2px;
             text-decoration: none;
-            font-size: 15px;
+        }
+        .sidebar-tag:hover { background: rgba(103, 193, 245, 0.2); }
+
+        /* 底部栏 (Footer) */
+        .steam-footer {
+            background: #171a21;
+            padding: 80px 0 60px 0;
+            margin-top: 100px;
+            color: var(--steam-text-muted);
+            font-size: 12px;
+            border-top: 2px solid rgba(0,0,0,0.2);
         }
 
-        .status-btn:hover { background: linear-gradient(to right, #8ed629 5%, #6aa621 95%); }
+        .footer-content { max-width: 940px; margin: 0 auto; padding: 0 20px; }
+        .footer-rule { height: 1px; background: rgba(139, 160, 178, 0.15); margin-bottom: 30px; }
+        
+        .footer-links { margin-bottom: 20px; font-size: 13px; }
+        .footer-links a { color: #c6d4df; text-decoration: none; margin-right: 15px; transition: color 0.2s; }
+        .footer-links a:hover { color: #fff; }
 
+        .footer-copyright p { margin: 6px 0; line-height: 1.6; }
+        .footer-note { font-size: 11px; opacity: 0.5; margin-top: 10px; }
+        
+        .footer-logo {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.05);
+            letter-spacing: 8px;
+            user-select: none;
+        }
+
+        /* 简单的 Contact 按钮高级感 */
+        .contact-btn {
+            display: inline-block;
+            border: 1px solid var(--steam-blue-bright);
+            color: var(--steam-blue-bright);
+            padding: 4px 12px;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .contact-btn:hover {
+            background: var(--steam-blue-bright);
+            color: #171a21;
+        }
     </style>
 </head>
 <body>
 
-<div class="header-bar">
-    <a href="#" class="logo">KOTONE CLUB</a>
-</div>
+<nav class="header-bar">
+    <a href="/" class="logo">KOTONE CLUB</a>
+</nav>
 
-<div class="content-hub">
-    <div class="section-title">精选与推荐</div>
+<div class="main-container">
     
-    <div class="hero-capsule">
-        <div class="main-image"></div>
-        <div class="side-info">
-            <div>
-                <h2>琴音社：JRPG 汉化与交流计划</h2>
-                <p style="font-size: 13px; color: var(--steam-text-muted);">
-                    致力于推广硬核 JRPG 文化，从翻译理论到实战优化，我们一直在路上。
-                </p>
-                <div class="tag-row">
-                    <span class="tag">翻译理论</span>
-                    <span class="tag">JRPG</span>
-                    <span class="tag">社区驱动</span>
-                </div>
+    <main class="store-left">
+        <div class="section-tab-bar">
+            <div class="tab active">热门活动</div>
+            <div class="tab">往期回顾</div>
+            <div class="tab">社团资源</div>
+        </div>
+
+        <div class="store-row" onclick="window.location.href='#';">
+            <img src="https://via.placeholder.com/132x50/1b2838/67c1f5?text=JRPG+Theory" class="row-img">
+            <div class="row-info">
+                <div class="row-title">琴音社：JRPG 翻译理论研究报告 (2026)</div>
+                <div class="row-icons">PDF | Academic</div>
             </div>
-            
-            <div class="action-area">
-                <span style="font-size: 12px;">现已开启招新</span>
-                <a href="#" class="status-btn">立即加入</a>
+            <div class="row-price-area">
+                <div class="row-tags">翻译学, 理论</div>
+                <div class="price-tag">免费查阅</div>
             </div>
         </div>
-    </div>
 
+        <div class="store-row" onclick="window.location.href='#';">
+            <img src="https://via.placeholder.com/132x50/1b2838/67c1f5?text=BoxModifier" class="row-img">
+            <div class="row-info">
+                <div class="row-title">boxmodifier - Android 数值前端修改插件</div>
+                <div class="row-icons">Android (Xposed/LSPosed)</div>
+            </div>
+            <div class="row-price-area">
+                <div class="row-tags">脚本, 开源</div>
+                <div class="price-tag">GitHub</div>
+            </div>
+        </div>
+
+        <div class="store-row" onclick="window.location.href='#';">
+            <img src="https://via.placeholder.com/132x50/1b2838/67c1f5?text=Octopath+II" class="row-img">
+            <div class="row-info">
+                <div class="row-title">《八方旅人 2》深度剧情解析与汉化细节探讨</div>
+                <div class="row-icons">Game Review</div>
+            </div>
+            <div class="row-price-area">
+                <div class="row-tags">JRPG, 深度内容</div>
+                <div class="price-tag">NEW</div>
+            </div>
+        </div>
+    </main>
+
+    <aside class="store-sidebar">
+        <div class="sidebar-box">
+            <div class="sidebar-title">按标签浏览</div>
+            <div class="tag-cloud">
+                <a href="#" class="sidebar-tag">JRPG</a>
+                <a href="#" class="sidebar-tag">Soulslike</a>
+                <a href="#" class="sidebar-tag">翻译理论</a>
+                <a href="#" class="sidebar-tag">Xposed</a>
+                <a href="#" class="sidebar-tag">小黑盒</a>
+                <a href="#" class="sidebar-tag">学术研究</a>
+            </div>
+        </div>
+
+        <div class="sidebar-box">
+            <div class="sidebar-title">关于 KotoneClub</div>
+            <p style="font-size: 12px; color: var(--steam-text-muted); line-height: 1.5;">
+                琴音社是一个专注于游戏文化交流、翻译理论探讨及前端技术研究的综合性兴趣社团。
+            </p>
+        </div>
+    </aside>
+
+</div>
+
+<footer class="steam-footer">
+    <div class="footer-content">
+        <div class="footer-rule"></div>
+        
+        <div class="footer-links">
+            <a href="mailto:contact@kotone.club" class="contact-btn">Contact Us</a>
+            <a href="https://github.com/KotoneClub">GitHub</a>
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+
+        <div class="footer-copyright">
+            <p>© 2010-2026 MuttsuStar Entertainment. All rights reserved.</p>
+            <p class="footer-note">KotoneClub 及其 Logo 均为 MuttsuStar Entertainment 的注册商标。所有引用游戏内容版权归原开发商所有。</p>
+        </div>
+        
+        <div class="footer-logo">MUTTSUSTAR</div>
     </div>
+</footer>
 
 </body>
 </html>
