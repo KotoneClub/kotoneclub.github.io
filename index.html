@@ -2,25 +2,124 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>KotoneClub | 琴音社官方网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KotoneClub - 琴音社中心</title>
     <style>
-        body { font-family: 'PingFang SC', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f5f7fa; }
-        .container { text-align: center; padding: 2rem; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { color: #333; margin-bottom: 0.5rem; }
-        p { color: #666; }
-        .links { margin-top: 1.5rem; }
-        .links a { margin: 0 10px; color: #007bff; text-decoration: none; font-weight: bold; }
+        /* 全局样式：模拟 Steam 背景 */
+        body {
+            margin: 0;
+            background: linear-gradient(to bottom, #1b2838 0%, #171a21 100%);
+            color: #c6d4df;
+            font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* 顶部导航栏模拟 */
+        .navbar {
+            background-color: #171a21;
+            padding: 20px 10%;
+            display: flex;
+            gap: 25px;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .navbar a { color: #dcdedf; text-decoration: none; }
+        .navbar a:hover { color: #ffffff; }
+
+        /* 内容容器 */
+        .container {
+            width: 940px;
+            margin: 40px auto;
+        }
+
+        /* 模拟 Steam 商店项目卡片 */
+        .store-item {
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            gap: 15px;
+            padding: 0;
+            margin-bottom: 5px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .store-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .store-item img {
+            width: 184px;
+            height: 69px; /* 模拟 Steam 列表缩略图比例 */
+            object-fit: cover;
+        }
+
+        .item-info {
+            flex-grow: 1;
+            padding: 10px 0;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            color: #c7d5e0;
+        }
+
+        .item-tags {
+            font-size: 0.8rem;
+            color: #38819c;
+            margin-top: 5px;
+        }
+
+        /* 价格/动作区域 */
+        .item-action {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .price-tag {
+            background-color: #000000;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            color: #acb2b8;
+        }
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <a href="#">商店</a>
+        <a href="#">社团动态</a>
+        <a href="#">关于琴音</a>
+        <a href="#">加入我们</a>
+    </nav>
+
     <div class="container">
-        <h1>Welcome to KotoneClub</h1>
-        <p>这里是琴音社的官方网站，目前正在建设中...</p>
-        <div class="links">
-            <a href="#">社团动态</a>
-            <a href="#">关于我们</a>
-            <a href="#">加入我们</a>
+        <h2 style="color: #ffffff; font-weight: 300;">正在热门：琴音社活动</h2>
+        
+        <div class="store-item">
+            <img src="https://via.placeholder.com/184x69/1b2838/ffffff?text=Activity+1" alt="封面">
+            <div class="item-info">
+                <div class="item-title">琴音社年度创作汇</div>
+                <div class="item-tags">音乐, 视觉小说, 角色扮演</div>
+            </div>
+            <div class="item-action">
+                <div class="price-tag">免费参与</div>
+            </div>
+        </div>
+
+        <div class="store-item">
+            <img src="https://via.placeholder.com/184x69/1b2838/ffffff?text=Activity+2" alt="封面">
+            <div class="item-info">
+                <div class="item-title">《八方旅人2》线下研讨会</div>
+                <div class="item-tags">JRPG, 策略, 深度交流</div>
+            </div>
+            <div class="item-action">
+                <div class="price-tag">已结束</div>
+            </div>
         </div>
     </div>
+
 </body>
 </html>
