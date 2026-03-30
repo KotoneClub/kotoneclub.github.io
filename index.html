@@ -5,85 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KotoneClub | 琴音社官方主页</title>
     <style>
-        :root {
-            --steam-bg-top: #1b2838;
-            --steam-bg-bottom: #171a21;
-            --steam-text-main: #c6d4df;
-            --steam-text-muted: #8ba0b2;
-            --steam-blue-bright: #67c1f5;
-            --steam-header-bg: #171a21;
-        }
+    :root {
+        --steam-bg-top: #1b2838;
+        --steam-bg-bottom: #171a21;
+        --steam-text-main: #c6d4df;
+        --steam-text-muted: #8ba0b2;
+        --steam-blue-bright: #67c1f5;
+        --steam-header-bg: #171a21;
+    }
 
-        body {
-            margin: 0;
-            background: linear-gradient(to bottom, var(--steam-bg-top) 0%, var(--steam-bg-bottom) 100%);
-            background-attachment: fixed;
-            color: var(--steam-text-main);
-            font-family: "Motiva Sans", Arial, sans-serif;
-        }
+    body {
+        margin: 0;
+        background: linear-gradient(to bottom, var(--steam-bg-top) 0%, var(--steam-bg-bottom) 100%);
+        background-attachment: fixed;
+        color: var(--steam-text-main);
+        font-family: "Motiva Sans", Arial, sans-serif;
+    }
 
-        /* 顶部导航 - 与子页面保持一致 */
-        .header-bar {
-            background: var(--steam-header-bg);
-            height: 104px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 15%;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+    /* 顶部导航 */
+    .header-bar {
+        background: var(--steam-header-bg);
+        height: 104px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 15%;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
 
-        .header-main { display: flex; align-items: center; justify-content: space-between; }
-        .logo { font-size: 26px; font-weight: 800; letter-spacing: 2px; color: #fff; text-decoration: none; }
-        .nav-links { display: flex; gap: 20px; margin-top: 10px; }
-        .nav-links a { color: #dcdedf; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-links a:hover, .nav-links a.active { color: #fff; border-bottom: 2px solid var(--steam-blue-bright); padding-bottom: 2px; }
+    .header-main { display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 26px; font-weight: 800; letter-spacing: 2px; color: #fff; text-decoration: none; }
+    .nav-links { display: flex; gap: 20px; margin-top: 10px; }
+    .nav-links a { color: #dcdedf; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; border-bottom: 2px solid var(--steam-blue-bright); padding-bottom: 2px; }
 
-        /* 门户大图 - 模仿 Steam 精选推荐 */
-        .hero-section { max-width: 940px; margin: 30px auto; }
-        .hero-capsule {
-            display: flex;
-            background: #00000066;
-            height: 350px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.4);
-        }
-        .hero-main-img { 
-            width: 616px; 
-            background: url('https://via.placeholder.com/616x353/1b2838/67c1f5?text=KotoneClub+Featured') no-repeat center/cover; 
-        }
-        .hero-side { flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; background: #0a0f16; }
+    /* --- 轮播图核心样式替换 --- */
+    .hero-section { max-width: 940px; margin: 30px auto; position: relative; }
+    
+    .hero-scroll-wrapper {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory; /* 强制对齐 */
+        scroll-behavior: smooth;    /* 平滑滚动 */
+        scrollbar-width: none;      /* 隐藏火狐滚动条 */
+    }
+    .hero-scroll-wrapper::-webkit-scrollbar { display: none; } /* 隐藏Chrome滚动条 */
 
-        /* 内容分栏 */
-        .main-layout { max-width: 940px; margin: 0 auto; display: flex; gap: 20px; }
-        .content-body { flex: 1; }
-        .sidebar { width: 210px; }
+    .hero-capsule {
+        flex: 0 0 100%;             /* 每个卡片占满宽度 */
+        display: flex;
+        background: #00000066;
+        height: 350px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        scroll-snap-align: start;   /* 滚动停靠点 */
+    }
 
-        /* Steam 风格的小型动态行 */
-        .news-row {
-            background: rgba(0,0,0,0.2);
-            padding: 10px 15px;
-            margin-bottom: 5px;
-            border-left: 2px solid transparent;
-            cursor: pointer;
-        }
-        .news-row:hover { background: rgba(255,255,255,0.05); border-left: 2px solid var(--steam-blue-bright); }
-        .news-date { font-size: 11px; color: var(--steam-blue-bright); text-transform: uppercase; }
-        .news-title { font-size: 14px; margin-top: 3px; }
+    .hero-main-img { 
+        width: 616px; 
+        height: 350px;
+        background-size: cover;
+        background-position: top center; /* 确保琴音的脸不被切掉 */
+        background-repeat: no-repeat;
+        /* 右侧边缘阴影，让图和文字区结合更自然 */
+        box-shadow: inset -60px 0 60px -20px #0a0f16;
+    }
 
-        /* 侧边栏模块 - 修复后的 Contact Us */
-        .sidebar-box { background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; }
-        .sidebar-header { font-size: 12px; color: var(--steam-blue-bright); border-bottom: 1px solid #38819c33; padding-bottom: 5px; margin-bottom: 10px; text-transform: uppercase; }
-        .contact-link { color: var(--steam-blue-bright); text-decoration: none; font-size: 13px; display: block; margin-top: 10px; }
-        .contact-link:hover { text-decoration: underline; }
+    .hero-side { 
+        flex: 1; 
+        padding: 25px; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: space-between; 
+        background: #0a0f16; 
+    }
 
-        /* 底部 */
-        .footer { background: #171a21; padding: 60px 0; margin-top: 80px; font-size: 12px; color: var(--steam-text-muted); }
-        .footer-inner { max-width: 940px; margin: 0 auto; border-top: 1px solid rgba(139,160,178,0.2); padding-top: 25px; }
-    </style>
+    .hero-title { margin: 0; font-size: 22px; color: #fff; font-weight: normal; }
+    .hero-desc { font-size: 13px; color: var(--steam-text-muted); line-height: 1.6; margin-top: 15px; }
+    .hero-status { font-size: 11px; padding: 10px; background: rgba(255,255,255,0.05); color: #fff; }
+
+    /* 指示小方块 */
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 10px;
+    }
+    .carousel-dots a {
+        width: 15px;
+        height: 9px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+    .carousel-dots a:hover { background: rgba(255, 255, 255, 0.4); }
+    /* --- 轮播样式结束 --- */
+
+    /* 内容分栏 */
+    .main-layout { max-width: 940px; margin: 0 auto; display: flex; gap: 20px; }
+    .content-body { flex: 1; }
+    .sidebar { width: 210px; }
+
+    /* 动态行 */
+    .news-row {
+        background: rgba(0,0,0,0.2);
+        padding: 10px 15px;
+        margin-bottom: 5px;
+        border-left: 2px solid transparent;
+        cursor: pointer;
+    }
+    .news-row:hover { background: rgba(255,255,255,0.05); border-left: 2px solid var(--steam-blue-bright); }
+
+    /* 侧边栏 */
+    .sidebar-box { background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; }
+    .sidebar-header { font-size: 12px; color: var(--steam-blue-bright); border-bottom: 1px solid #38819c33; padding-bottom: 5px; margin-bottom: 10px; text-transform: uppercase; }
+    .contact-link { color: var(--steam-blue-bright); text-decoration: none; font-size: 13px; display: block; margin-top: 10px; }
+
+    /* 底部 */
+    .footer { background: #171a21; padding: 60px 0; margin-top: 80px; font-size: 12px; color: var(--steam-text-muted); }
+    .footer-inner { max-width: 940px; margin: 0 auto; border-top: 1px solid rgba(139,160,178,0.2); padding-top: 25px; }
+</style>
 </head>
+<script>
+    const wrapper = document.querySelector('.hero-scroll-wrapper');
+    const slides = document.querySelectorAll('.hero-capsule');
+    let index = 0;
+    setInterval(() => {
+        index++;
+        if (index >= slides.length) index = 0;
+        wrapper.scrollTo({ left: index * wrapper.offsetWidth, behavior: 'smooth' });
+    }, 5000); // 5秒换一张
+</script>    
 <body>
 
 <header class="header-bar">
@@ -101,19 +155,72 @@
 </header>
 
 <div class="hero-section">
-    <div class="hero-capsule">
-        <div class="hero-main-img"></div>
-        <div class="hero-side">
-            <div>
-                <h2 style="margin:0; font-size: 22px; color:#fff;">琴音社 2026 年度展望</h2>
-                <p style="font-size: 13px; color:var(--steam-text-muted); line-height: 1.5; margin-top:15px;">
-                    探索 JRPG 的翻译美学与技术边界。我们正在寻找热爱文字与代码的你。
-                </p>
-            </div>
-            <div style="font-size: 11px; padding: 10px; background: rgba(0,0,0,0.5);">
-                当前热门项目：八方旅人2 汉化词条校对
+    <div class="hero-carousel-container">
+    <div class="hero-scroll-wrapper">
+        
+        <div class="hero-capsule" id="slide-1">
+            <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401251-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
+            <div class="hero-side">
+                <div>
+                    <h2 class="hero-title">琴音社 2026 年度展望</h2>
+                    <p class="hero-desc">专注硬核游戏文化分享，连接每一位热爱 JRPG 与动作游戏的玩家。查看我们全年的活动规划。</p>
+                </div>
+                <div class="hero-status">最新公告：2026 招募开启</div>
             </div>
         </div>
+
+        <div class="hero-capsule" id="slide-2">
+            <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401252-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
+            <div class="hero-side">
+                <div>
+                    <h2 class="hero-title">《仁王3》深度评测</h2>
+                    <p class="hero-desc">动作系统硬核拆解：残心与流转机制在新作中的极致进化。这是属于武士的浪漫。</p>
+                </div>
+                <div class="hero-status">热门文章：Hot Review</div>
+            </div>
+        </div>
+
+        <div class="hero-capsule" id="slide-3">
+            <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401253-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
+            <div class="hero-side">
+                <div>
+                    <h2 class="hero-title">BoxModifier v2.0 发布</h2>
+                    <p class="hero-desc">基于 LSPosed 的 Android 游戏前端数值实时修改工具。支持更多机型与新版系统。</p>
+                </div>
+                <div class="hero-status">工具更新：Stable Build</div>
+            </div>
+        </div>
+
+        <div class="hero-capsule" id="slide-4">
+            <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401248-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
+            <div class="hero-side">
+                <div>
+                    <h2 class="hero-title">JRPG 补完计划</h2>
+                    <p class="hero-desc">《八方旅人 2》全职业隐藏要素与后期装配思路分享。一起探索奥鲁斯特拉大陆。</p>
+                </div>
+                <div class="hero-status">攻略集：Archive</div>
+            </div>
+        </div>
+
+        <div class="hero-capsule" id="slide-5">
+            <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2025/01/202500050-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
+            <div class="hero-side">
+                <div>
+                    <h2 class="hero-title">加入琴音社</h2>
+                    <p class="hero-desc">无论你是全成就大神，还是喜欢折腾脚本的极客，琴音社都欢迎你的加入。</p>
+                </div>
+                <div class="hero-status">联系我们：Contact Us</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="carousel-dots">
+        <a href="#slide-1"></a>
+        <a href="#slide-2"></a>
+        <a href="#slide-3"></a>
+        <a href="#slide-4"></a>
+        <a href="#slide-5"></a>
     </div>
 </div>
 
