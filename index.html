@@ -102,7 +102,32 @@
     }
     .carousel-dots a:hover { background: rgba(255, 255, 255, 0.4); }
     /* --- 轮播样式结束 --- */
+        
+    /* 轮播容器定位 */
+.hero-section { position: relative; }
 
+/* 左右箭头样式 */
+.slider-nav {
+    position: absolute;
+    top: 0; bottom: 0; width: 46px;
+    background: rgba(0, 0, 0, 0);
+    border: none; color: #fff; cursor: pointer;
+    z-index: 10; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s, background 0.3s;
+}
+.hero-section:hover .slider-nav { opacity: 1; } /* 鼠标移入显示箭头 */
+.slider-nav:hover { background: rgba(255, 255, 255, 0.1); }
+.slider-nav.prev { left: 0; background: linear-gradient(to right, rgba(0,0,0,0.5), transparent); }
+.slider-nav.next { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.5), transparent); }
+.slider-nav svg { width: 20px; height: 35px; fill: rgba(255,255,255,0.5); }
+
+/* 指示点样式 */
+.carousel-dots .dot {
+    width: 15px; height: 9px; background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px; cursor: pointer; display: inline-block; margin: 0 2px;
+}
+.carousel-dots .dot.active { background: rgba(255, 255, 255, 0.5); }
+        
     /* 内容分栏 */
     .main-layout { max-width: 940px; margin: 0 auto; display: flex; gap: 20px; }
     .content-body { flex: 1; }
@@ -130,14 +155,44 @@
 </head>
 <script>
     const wrapper = document.querySelector('.hero-scroll-wrapper');
-    const slides = document.querySelectorAll('.hero-capsule');
-    let index = 0;
-    setInterval(() => {
-        index++;
-        if (index >= slides.length) index = 0;
-        wrapper.scrollTo({ left: index * wrapper.offsetWidth, behavior: 'smooth' });
-    }, 5000); // 5秒换一张
-</script>    
+    const dots = document.querySelectorAll('.dot');
+    let currentIndex = 0;
+    const totalSlides = 5;
+
+    // 更新指示点状态
+    function updateDots() {
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIndex);
+        });
+    }
+
+    // 核心跳转函数
+    function goToSlide(index) {
+        currentIndex = index;
+        const slideWidth = wrapper.offsetWidth;
+        wrapper.scrollTo({
+            left: index * slideWidth,
+            behavior: 'smooth'
+        });
+        updateDots();
+    }
+
+    // 左右箭头调用
+    function moveSlide(step) {
+        currentIndex = (currentIndex + step + totalSlides) % totalSlides;
+        goToSlide(currentIndex);
+    }
+
+    // 自动播放定时器
+    let autoTimer = setInterval(() => moveSlide(1), 5000);
+
+    // 鼠标移入时停止自动播放，移出时恢复
+    const heroSection = document.querySelector('.hero-section');
+    heroSection.addEventListener('mouseenter', () => clearInterval(autoTimer));
+    heroSection.addEventListener('mouseleave', () => {
+        autoTimer = setInterval(() => moveSlide(1), 5000);
+    });
+</script>  
 <body>
 
 <header class="header-bar">
@@ -155,72 +210,76 @@
 </header>
 
 <div class="hero-section">
-    <div class="hero-carousel-container">
+    <button class="slider-nav prev" onclick="moveSlide(-1)">
+        <svg viewBox="0 0 48 79"><path d="M39.18353 79L0 39.4995L39.18353 0L48 8.8876L17.6329 39.5005L48 70.1124L39.18353 79Z" fill="currentColor"></path></svg>
+    </button>
+    <button class="slider-nav next" onclick="moveSlide(1)">
+        <svg viewBox="0 0 48 79"><path d="M8.81647 0L48 39.5005L8.81647 79L0 70.1124L30.3671 39.4995L0 8.88756L8.81647 0Z" fill="currentColor"></path></svg>
+    </button>
+
     <div class="hero-scroll-wrapper">
-        
-        <div class="hero-capsule" id="slide-1">
+        <div class="hero-capsule">
             <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401251-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
             <div class="hero-side">
                 <div>
                     <h2 class="hero-title">琴音社 2026 年度展望</h2>
-                    <p class="hero-desc">专注硬核游戏文化分享，连接每一位热爱 JRPG 与动作游戏的玩家。查看我们全年的活动规划。</p>
+                    <p class="hero-desc">专注硬核游戏文化分享，连接每一位热爱 JRPG 与动作游戏的玩家。</p>
                 </div>
                 <div class="hero-status">最新公告：2026 招募开启</div>
             </div>
         </div>
 
-        <div class="hero-capsule" id="slide-2">
+        <div class="hero-capsule">
             <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401252-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
             <div class="hero-side">
                 <div>
                     <h2 class="hero-title">《仁王3》深度评测</h2>
-                    <p class="hero-desc">动作系统硬核拆解：残心与流转机制在新作中的极致进化。这是属于武士的浪漫。</p>
+                    <p class="hero-desc">动作系统硬核拆解：残心与流转机制在新作中的极致进化。</p>
                 </div>
                 <div class="hero-status">热门文章：Hot Review</div>
             </div>
         </div>
 
-        <div class="hero-capsule" id="slide-3">
+        <div class="hero-capsule">
             <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401253-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
             <div class="hero-side">
                 <div>
                     <h2 class="hero-title">BoxModifier v2.0 发布</h2>
-                    <p class="hero-desc">基于 LSPosed 的 Android 游戏前端数值实时修改工具。支持更多机型与新版系统。</p>
+                    <p class="hero-desc">基于 LSPosed 的 Android 游戏前端数值实时修改工具。</p>
                 </div>
                 <div class="hero-status">工具更新：Stable Build</div>
             </div>
         </div>
 
-        <div class="hero-capsule" id="slide-4">
+        <div class="hero-capsule">
             <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2024/07/202401248-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
             <div class="hero-side">
                 <div>
                     <h2 class="hero-title">JRPG 补完计划</h2>
-                    <p class="hero-desc">《八方旅人 2》全职业隐藏要素与后期装配思路分享。一起探索奥鲁斯特拉大陆。</p>
+                    <p class="hero-desc">《八方旅人 2》全职业隐藏要素与后期装配思路分享。</p>
                 </div>
                 <div class="hero-status">攻略集：Archive</div>
             </div>
         </div>
 
-        <div class="hero-capsule" id="slide-5">
+        <div class="hero-capsule">
             <div class="hero-main-img" style="background-image: url('https://anihonetwallpaper.com/image/2025/01/202500050-Gakuen_idolmaster-FujitaKotone.jpg');"></div>
             <div class="hero-side">
                 <div>
                     <h2 class="hero-title">加入琴音社</h2>
-                    <p class="hero-desc">无论你是全成就大神，还是喜欢折腾脚本的极客，琴音社都欢迎你的加入。</p>
+                    <p class="hero-desc">无论你是全成就大神，还是喜欢折腾脚本的极客，我们都欢迎你的加入。</p>
                 </div>
                 <div class="hero-status">联系我们：Contact Us</div>
             </div>
         </div>
-
     </div>
 
     <div class="carousel-dots">
-        <a href="#slide-1"></a>
-        <a href="#slide-2"></a>
-        <a href="#slide-3"></a>
-        <a href="#slide-4"></a>
-        <a href="#slide-5"></a>
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
+        <span class="dot" onclick="goToSlide(3)"></span>
+        <span class="dot" onclick="goToSlide(4)"></span>
     </div>
 </div>
 
